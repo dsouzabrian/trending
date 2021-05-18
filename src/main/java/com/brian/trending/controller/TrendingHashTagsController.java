@@ -38,7 +38,24 @@ public class TrendingHashTagsController {
             System.out.println(e);
         }
      return listOfTrendingHashTags;
+   
+    /*
+        Function to return list of tweets from the input HashTag using Twitter API and twitter4j library
+    */
+    @GetMapping("/trending/{hashtag}")
+    public List<String> getTweetsfromHashTags(@PathVariable(value = "hashtag") String getHashTag) throws Exception {
+        ArrayList<String> listOfTweets = new ArrayList<String>();
+        Twitter twitter = new TwitterFactory().getInstance();
+
+        Query query = new Query(getHashTag);
+        QueryResult result = twitter.search(query);
+        for (Status status : result.getTweets()) {
+            listOfTweets.add( status.getUser().getScreenName() + " : " + status.getText());
+        }
+        return listOfTweets;
+
+    }
 }
-}
+
 
 
